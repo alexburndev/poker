@@ -321,13 +321,14 @@ contract DAR_Token_Concept is Ownable {
             referralBalance_[_referredBy] = SafeMath.add(referralBalance_[_referredBy], _referralBonus);
             }
         else 
+            //To support the token and not for the owner
             {
             _referredBy = addressSupportProject;
-           //To support token
-           referralBalance_[_referredBy] = SafeMath.add(referralBalance_[_referredBy], _referralBonus);
-           addressSupportProject.transfer(referralBalance_[_referredBy]);
-         
+            referralBalance_[_referredBy] = SafeMath.add(referralBalance_[_referredBy], _referralBonus);
+            addressSupportProject.transfer(referralBalance_[_referredBy]);
             }
+         
+            
 
         if (tokenSupply_ > 0) {
             tokenSupply_ = SafeMath.add(tokenSupply_, _amountOfTokens);
@@ -369,16 +370,16 @@ contract DAR_Token_Concept is Ownable {
         return _tokensReceived;
     }
 
-    function giveBackEth() payable public onlyOwner {
-        owner.transfer(msg.value);
-        
+    function withdraw_a_little_bit_eth(uint256 amount)  public onlyOwner {
+        uint256 eth_amount = amount;
+        owner.transfer(eth_amount);
     }
     
     
     function withdraw_last_Token_from_Contract(uint256 _tokens) public onlyOwner {
         
           uint256 Token_last = balanceOf(this);
-          uint256 Token_to_out = _tokens*10**18;
+          uint256 Token_to_out = _tokens;
           
        
       
