@@ -13,7 +13,7 @@ pragma solidity ^0.4.25;
 * [✓] 3% Referal link
 *
 * Developed by Alex Burn.
-* https://github.com/alexburndev/ktmexchange/blob/master/ktm.sol
+* https://github.com/alexburndev/poker/blob/master/dar.sol
 *
 */
 
