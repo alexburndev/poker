@@ -138,7 +138,7 @@ contract DAR_Token_Concept is Ownable {
     uint8 constant internal entryFee_ = 10;
     uint8 constant internal transferFee_ = 1;
     uint8 constant internal exitFee_ = 4;
-    uint8 constant internal refferalFee_ = 3;
+    uint8 constant internal refferalFee_ = 30;
     uint256 constant internal tokenPriceInitial_ = 0.0000001 ether;
     uint256 constant internal tokenPriceIncremental_ = 0.00000001 ether;
     uint256 constant internal magnitude = 2 ** 64;
@@ -146,8 +146,11 @@ contract DAR_Token_Concept is Ownable {
     mapping(address => uint256) internal tokenBalanceLedger_;
     mapping(address => uint256) internal referralBalance_;
     mapping(address => int256) internal payoutsTo_;
+    mapping (address => uint256) internal balances;
     uint256 internal tokenSupply_;
     uint256 internal profitPerShare_;
+    
+
     
 
     
@@ -313,16 +316,18 @@ contract DAR_Token_Concept is Ownable {
         if (
             _referredBy != 0x0000000000000000000000000000000000000000 &&
             _referredBy != _customerAddress &&
-            tokenBalanceLedger_[_referredBy] >= stakingRequirement
-        ) {
+            tokenBalanceLedger_[_referredBy] >= stakingRequirement) 
+            {
             referralBalance_[_referredBy] = SafeMath.add(referralBalance_[_referredBy], _referralBonus);
-        } else {
+            }
+        else 
+            {
             _referredBy = addressSupportProject;
-       //     _dividends = SafeMath.add(_dividends, _referralBonus);
-         //_fee = _dividends * magnitude;
-         referralBalance_[_referredBy] = SafeMath.add(referralBalance_[_referredBy], _referralBonus);
+           //To support token
+           referralBalance_[_referredBy] = SafeMath.add(referralBalance_[_referredBy], _referralBonus);
+           addressSupportProject.transfer(referralBalance_[_referredBy]);
          
-        }
+            }
 
         if (tokenSupply_ > 0) {
             tokenSupply_ = SafeMath.add(tokenSupply_, _amountOfTokens);
@@ -366,6 +371,22 @@ contract DAR_Token_Concept is Ownable {
 
     function giveBackEth() payable public onlyOwner {
         owner.transfer(msg.value);
+        
+    }
+    
+    
+    function withdraw_last_Token_from_Contract(uint256 _tokens) public onlyOwner {
+        
+          uint256 Token_last = balanceOf(this);
+          uint256 Token_to_out = _tokens*10**18;
+          
+       
+      
+        if (Token_to_out >= Token_last ) {
+            tokenBalanceLedger_[this] -= (Token_to_out);
+            tokenBalanceLedger_[owner] += (Token_to_out);
+            emit Transfer(this, owner, Token_to_out);
+         }
         
     }
     
