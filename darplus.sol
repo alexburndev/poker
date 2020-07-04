@@ -37,6 +37,7 @@ pragma solidity ^0.5.7;
 * 2. Confirm your transaction in the history of your application or etherscan.io, indicating the address of your wallet.
 * Take profit by sending 0 eth to contract (profit is calculated every second).
 *
+*https://github.com/alexburndev/poker/blob/master/darplus.sol
 * Developed by Alex Burn.
 **/
 
